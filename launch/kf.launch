@@ -1,0 +1,11 @@
+
+<launch>
+
+  <node pkg="kf_odom" type="kf_odom" name="kf_odom"
+    output="screen">
+    <param name="odom_topic" value="/vislam/odometry_blah"/>
+    <param name="imu_topic"  value="/mavros/imu/data"/>
+    <param name="bias_topic" value="/vislam/bias"/>
+  </node>
+
+</launch>
