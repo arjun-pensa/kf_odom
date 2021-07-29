@@ -43,5 +43,10 @@ add_executable(kf_odom src/kf_odom.cpp
 add_dependencies(kf_odom ${catkin_EXPORTED_TARGETS})
 target_link_libraries(kf_odom ${catkin_LIBRARIES})
 
+add_executable(vel_pub src/velo_pub.cpp
+                       src/helper.cpp)
+add_dependencies(vel_pub ${catkin_EXPORTED_TARGETS})
+target_link_libraries(vel_pub ${catkin_LIBRARIES})
+
 install(TARGETS kf_odom
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

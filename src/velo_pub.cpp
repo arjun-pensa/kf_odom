@@ -1,5 +1,4 @@
 #include "ros/ros.h"
-#include <deque>
 
 #include <Eigen/Dense>
 #include <geometry_msgs/PoseWithCovarianceStamped.h>
@@ -67,7 +66,7 @@ public:
  
  	void PoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg) {
 		
-		Eigen::Vector2d accel_meas = Eigen::Vector2d(msg.pose.pose.position.x,msg.pose.pose.position.x);
+		Eigen::Vector2d accel_meas = Eigen::Vector2d(msg->pose.pose.position.x,msg->pose.pose.position.y);
 		
 		// Initialization (first time this callback runs)
 		if (init_time_.toSec() == 0) {
@@ -83,20 +82,14 @@ public:
 		if (dt > 0) {
 			cur_time_ = msg->header.stamp;
 			a_meas_ = accel_stamped(accel_meas, cur_time_, dt);
-			this->PropagationUpdate(dt);
+			// this->PropagationUpdate(dt);
 			this->AddMeasToList(a_meas_);
 		}
 	}
 
 };
 
-void showdq(deque <int> g)
-{
-    deque <int> :: iterator it;
-    for (it = g.begin(); it != g.end(); ++it)
-        cout << '\t' << *it;
-    cout << '\n';
-}
+
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "~");
@@ -105,7 +98,7 @@ int main(int argc, char **argv) {
  	  
   double max_list_size = 0.5;  // Half a second as maximum width in the list
 
-  KF kf_obj(&n, max_list_size);
+  velpub vel_obj(&n, max_list_size);
 
    
   
