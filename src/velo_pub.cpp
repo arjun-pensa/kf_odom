@@ -107,30 +107,12 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "~");
   ros::NodeHandle n("~");
 
- 
+ 	  
+  double max_list_size = 0.5;  // Half a second as maximum width in the list
 
-    deque <int> gquiz;
-    gquiz.push_back(10);
-    gquiz.push_front(20);
-    gquiz.push_back(30);
-    gquiz.push_front(15);
-    cout << "The deque gquiz is : ";
-    showdq(gquiz);
-  
-    cout << "\ngquiz.size() : " << gquiz.size();
-    cout << "\ngquiz.max_size() : " << gquiz.max_size();
-  
-    cout << "\ngquiz.at(2) : " << gquiz.at(2);
-    cout << "\ngquiz.front() : " << gquiz.front();
-    cout << "\ngquiz.back() : " << gquiz.back();
-  
-    cout << "\ngquiz.pop_front() : ";
-    gquiz.pop_front();
-    showdq(gquiz);
-  
-    cout << "\ngquiz.pop_back() : ";
-    gquiz.pop_back();
-    showdq(gquiz);
+  KF kf_obj(&n, max_list_size);
+
+   
   
   
   ros::spin();
