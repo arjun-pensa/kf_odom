@@ -15,7 +15,7 @@ class accel_stamped {
 		stamp_ = stamp;
 		dt_ = dt;
 	}
-	Eigen::Vector3d get_meas() {return meas_;}
+	Eigen::Vector2d get_meas() {return meas_;}
 	ros::Time get_time() {return stamp_;}
 	double get_dt() {return dt_;}
  private:
@@ -66,13 +66,8 @@ public:
 	}
  
  	void PoseCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &msg) {
-		geometry_msgs::Vector3 accel = 
-			helper::convert_to_inertial_frame(msg->orientation, 
-				                              msg->linear_acceleration);
 		
-		// Deduct gravity from acceleration measurement
-		Eigen::Vector3d accel_meas = helper::vector3_to_eigen(accel) + 
-		                             Eigen::Vector3d(0.0, 0.0, -9.81);
+		Eigen::Vector2d accel_meas = Eigen::Vector2d(msg.pose.pose.position.x,msg.pose.pose.position.x);
 		
 		// Initialization (first time this callback runs)
 		if (init_time_.toSec() == 0) {
