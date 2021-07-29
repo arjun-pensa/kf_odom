@@ -278,7 +278,7 @@ class KF {
 		Eigen::Vector3d bias_meas = helper::vector3_to_eigen(msg->transform.translation);
 		this->BiasMeasurementUpdate(bias_meas, R_b_);
 	}
-};
+}
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "~");
