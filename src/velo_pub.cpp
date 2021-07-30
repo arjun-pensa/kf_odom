@@ -30,6 +30,7 @@ public:
 	ros::Time cur_time_;
 	ros::NodeHandle *nh_;
 	ros::Subscriber pose_sub_;
+	ros::Publisher vel_pub_;
 	ros::Time init_time_;
 
 	// List of past measurements
@@ -43,11 +44,14 @@ public:
 		init_time_ = ros::Time(0.0);
 
 		// Start subscribers
-		std::string pose_topic;
+		std::string pose_topic, vel_topic;
 		nh_->getParam("pose_topic", pose_topic);
+		nh_->getParam("velpub_topic", vel_topic);
 		ROS_INFO("%s ", pose_topic.c_str());
 		pose_sub_ = nh_->subscribe(pose_topic, 1, &velpub::PoseCallback, this);
 		ROS_INFO("[velpub] Pose topic: %s", pose_sub_.getTopic().c_str());
+		vel_pub_ = nh_->advertise<geometry_msgs::Twist>(vel_topic, 10);
+		ROS_INFO("[velpub] Velocity topic: %s", vel_pub_.getTopic().c_str());
 	}
 
 	void AddMeasToList(const accel_stamped &a_new) {
@@ -57,6 +61,7 @@ public:
 			dt = list_a_meas_.front().get_time() - list_a_meas_.back().get_time();
 			if (dt.toSec() > max_list_size_) {
 				list_a_meas_.pop_back();
+				
 			} else {
 				break;
 			}
