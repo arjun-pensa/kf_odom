@@ -61,11 +61,22 @@ public:
 			dt = list_a_meas_.front().get_time() - list_a_meas_.back().get_time();
 			if (dt.toSec() > max_list_size_) {
 				list_a_meas_.pop_back();
-				
 			} else {
 				break;
 			}
 		}
+		Eigen::Vector2d disp = list_a_meas_.front().get_meas() - list_a_meas_.back().get_meas();
+		dt = list_a_meas_.front().get_time() - list_a_meas_.back().get_time();
+		float velx, vely;
+		if (!dt.isZero()) {
+			velx = disp(0)/dt.toSec();
+			vely = disp(0)/dt.toSec();
+		}
+		geometry_msgs::Twist vel;
+		vel.linear.x = velx;
+		vel.linear.y = vely;
+		vel_pub_.publish(vel);
+		 
 		// ROS_INFO("Time deviation: %f", dt.toSec());
 	}
  
