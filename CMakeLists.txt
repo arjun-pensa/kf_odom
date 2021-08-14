@@ -15,14 +15,28 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   tf
+  tf2
+  tf2_ros
 )
 
 find_package(Eigen REQUIRED)
 
+## Generate messages in the 'msg' folder
+add_message_files(
+    FILES
+    DeviceRangeMsg.msg
+)
+
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+    DEPENDENCIES
+    std_msgs  # Or other packages containing msgs
+)
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kf_odom
- CATKIN_DEPENDS geometry_msgs nav_msgs roscpp std_msgs 
+ CATKIN_DEPENDS geometry_msgs nav_msgs roscpp std_msgs
  DEPENDS Eigen
 )
 
@@ -43,10 +57,18 @@ add_executable(kf_odom src/kf_odom.cpp
 add_dependencies(kf_odom ${catkin_EXPORTED_TARGETS})
 target_link_libraries(kf_odom ${catkin_LIBRARIES})
 
+add_executable(kf_uwb src/kf_uwb.cpp
+                       src/helper.cpp)
+add_dependencies(kf_uwb ${catkin_EXPORTED_TARGETS})
+target_link_libraries(kf_uwb ${catkin_LIBRARIES})
+
 add_executable(vel_pub src/velo_pub.cpp
                        src/helper.cpp)
 add_dependencies(vel_pub ${catkin_EXPORTED_TARGETS})
 target_link_libraries(vel_pub ${catkin_LIBRARIES})
 
+add_executable(vel_trans src/vel_tf_pub.cpp)
+add_dependencies(vel_trans ${catkin_EXPORTED_TARGETS})
+target_link_libraries(vel_trans ${catkin_LIBRARIES})
 install(TARGETS kf_odom
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
